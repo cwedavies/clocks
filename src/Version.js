@@ -36,8 +36,8 @@ const Version = () => {
     return null;
   }
 
-  const { hash } = data;
-  const [start, rest] = splitAt(7)(hash);
+  const { commit } = data;
+  const [start, rest] = splitAt(7)(commit);
 
   const url = `https://github.com/cwedavies/clocks/tree/${hash}`;
 
