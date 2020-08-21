@@ -13,11 +13,8 @@ body,
 
   position: relative;
 
-  background: linear-gradient(5deg, #031634, #033649 120%)
-}
-
-html {
-  font-family: "Timothy";
+  background: linear-gradient(5deg, #031634, #033649 120%);
+  color: #e8ddcb;
 }
 
 #root {
@@ -27,6 +24,7 @@ html {
 }
 
 svg {
+  font-family: "Timothy";
   flex: 0 0 auto;
   position: relative;
   height: 2160px;
@@ -80,11 +78,15 @@ path {
 
 body {
   margin: 0;
-  font-family: "Timothy";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   position: relative;
+}
+
+a {
+  color: inherit;
 }
 
 code {

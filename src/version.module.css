@@ -1,0 +1,22 @@
+.root {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  font-size: 0.8rem;
+
+  padding: 0.45rem 0.9rem;
+
+  background: #00000088;
+  opacity: 0.3;
+
+  border-top-left-radius: 4px;
+}
+
+.root:hover {
+  opacity: 1;
+}
+
+.root .rest {
+  opacity: 0.6;
+}
