@@ -15,6 +15,7 @@ jobs:
           node-version: "12.x"
       - run: yarn install --frozen-lockfile
       - run: yarn build
+      - run: ./scripts/version-build.sh > ./build/version.json
       - uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --delete
