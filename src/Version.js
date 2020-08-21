@@ -32,14 +32,14 @@ const splitAt = (index) => (x) => [x.slice(0, index), x.slice(index)];
 const Version = () => {
   const { data } = useFetch(`${process.env.PUBLIC_URL}/version.json`);
 
-  if (!data) {
+  if (!data || !data.commit) {
     return null;
   }
 
   const { commit } = data;
   const [start, rest] = splitAt(7)(commit);
 
-  const url = `https://github.com/cwedavies/clocks/tree/${hash}`;
+  const url = `https://github.com/cwedavies/clocks/tree/${commit}`;
 
   return (
     <a className={styles.root} href={url}>
