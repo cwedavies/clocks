@@ -1,13 +1,15 @@
 import _ from "lodash/fp";
 import classnames from "classnames";
-import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import {
   forceSimulation,
   forceCenter,
   forceManyBody,
   forceCollide,
 } from "d3-force";
-import { easeQuadInOut, easeCircleIn, easeQuadIn } from "d3";
+import { useSpring } from "react-spring";
+import { easeQuadIn } from "d3";
+import { useDebug } from "./debug";
 
 const mapWithKey = _.map.convert({ cap: false });
 
@@ -16,6 +18,10 @@ const radius = (node) => node.scale * 200;
 const initial = [
   { text: "guards! guards!" },
   { text: "A Poison seeping into the bones" },
+  { text: "old one awakes" },
+  { text: "old one awakes" },
+  { text: "old one awakes" },
+  { text: "old one awakes" },
   { text: "old one awakes" },
   {},
   {},
@@ -38,7 +44,7 @@ const forceFocus = (focus) => {
       }
 
       const diff = target - node.prevScale;
-      const t = 1 - alpha;
+      const t = _.min([(1 - alpha) * 5, 1]);
 
       node.scale = node.prevScale + diff * easeQuadIn(t);
     }
@@ -95,15 +101,17 @@ const useSimulation = () => {
     simulation.current.force("focus", forceFocus(focus)).alpha(1).restart();
   }, [focus]);
 
-  return { state, setFocus };
+  return { state, focus, setFocus };
 };
 
 const Circle = (props) => {
-  const { x, y, scale, debug = false, onClick, text } = props;
+  const { x, y, scale, onClick, text } = props;
+  const { debug } = useDebug();
 
   const id = useRef(_.uniqueId());
 
   const arcp = 200 * 0.75;
+
   const className = classnames({ debug });
 
   return (
@@ -114,7 +122,7 @@ const Circle = (props) => {
           d={`M ${-arcp} 0 A ${arcp} ${arcp} 0 0 1 ${arcp} 0`}
         />
       </defs>
-      <circle onClick={onClick} className="bounds" r={200} />
+      <circle onClick={onClick} className="bounds" r={200}></circle>
       <circle r={200 * 0.7} />
       <text textAnchor="middle">
         <textPath href={`#${id.current}`} startOffset="50%">
@@ -126,27 +134,32 @@ const Circle = (props) => {
 };
 
 const Layout = (props) => {
-  const { state, setFocus } = useSimulation();
+  const { state, focus, setFocus } = useSimulation();
+  const [p, set] = useSpring(() => ({ x: 0, y: 0 }));
+
+  const focused = state.nodes[focus];
+  useEffect(() => {
+    set(focused || { x: 0, y: 0 });
+  }, [focus, focused, set]);
 
   return (
-    <svg
-      viewBox="-1080 -1920 2160 3840"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      {mapWithKey(
-        (node, index) => (
-          <Circle
-            onClick={() => setFocus(index)}
-            key={index}
-            text={node.text}
-            scale={node.scale}
-            x={node.x}
-            y={node.y}
-            debug={true}
-          />
-        ),
-        state.nodes
-      )}
+    <svg viewBox="-1080 -1920 2160 3840" preserveAspectRatio="xMidYMid meet">
+      <g transform={`translate(${-p.x.value}, ${-p.y.value})`}>
+        {mapWithKey(
+          (node, index) => (
+            <Circle
+              onClick={() => setFocus(index)}
+              key={index}
+              text={node.text}
+              scale={node.scale}
+              x={node.x}
+              y={node.y}
+              debug={true}
+            />
+          ),
+          state.nodes
+        )}
+      </g>
     </svg>
   );
 };
