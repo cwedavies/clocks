@@ -1,0 +1,26 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - yarn build
+  deploy:
+    cmds:
+      - aws s3 sync ./build s3://clocks-s3bucket-1rf8xuysu4528
+  stack:create:
+    desc: "Provision the requried resources on AWS."
+    cmds:
+      - aws cloudformation create-stack --stack-name clocks --template-body file://./cloudformation.yaml
+  stack:info:
+    cmds:
+      - aws cloudformation describe-stacks --stack-name clocks | jq '.Stacks[0]'
+  stack:output:
+    cmds:
+      - aws cloudformation describe-stacks --stack-name clocks | jq '.Stacks[0].Outputs'
+  stack:update:
+    desc: "Update provisioned resources on AWS."
+    cmds:
+      - aws cloudformation update-stack --stack-name clocks --template-body file://./cloudformation.yaml
+  stack:wait:
+    cmds:
+      - aws cloudformation wait stack-update-complete --stack-name clocks
