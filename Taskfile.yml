@@ -20,7 +20,7 @@ tasks:
   stack:update:
     desc: "Update provisioned resources on AWS."
     cmds:
-      - aws cloudformation update-stack --stack-name clocks --template-body file://./cloudformation.yaml
+      - aws cloudformation update-stack --stack-name clocks --capabilities CAPABILITY_IAM --template-body file://./cloudformation.yaml
   stack:wait:
     cmds:
       - aws cloudformation wait stack-update-complete --stack-name clocks

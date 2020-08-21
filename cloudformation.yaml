@@ -22,7 +22,7 @@ Resources:
     Type: "AWS::S3::Bucket"
 
   Cert:
-    Type: 'AWS::CertificateManager::Certificate'
+    Type: "AWS::CertificateManager::Certificate"
     Properties:
       DomainName: !Ref Domain
       ValidationMethod: DNS
@@ -85,11 +85,33 @@ Resources:
         PriceClass: "PriceClass_100"
         ViewerCertificate:
           AcmCertificateArn: !Ref Cert
-          SslSupportMethod: 'sni-only'
+          SslSupportMethod: "sni-only"
+  PublishUser:
+    Type: "AWS::IAM::User"
+    Properties:
+      Policies:
+        - PolicyName: !Sub "publish-to-${S3Bucket}"
+          PolicyDocument:
+            Statement:
+              - Action: "s3:*"
+                Effect: Allow
+                Resource:
+                  - !Sub "arn:aws:s3:::${S3Bucket}"
+                  - !Sub "arn:aws:s3:::${S3Bucket}/*"
+  PublishCredentials:
+    Type: "AWS::IAM::AccessKey"
+    Properties:
+      UserName: !Ref PublishUser
 Outputs:
   BucketName:
     Description: "S3 Bucket Name"
     Value: !Ref S3Bucket
+  AccessKeyId:
+    Description: "S3 Access Key"
+    Value: !Ref PublishCredentials
+  AccessKeySecret:
+    Description: "S3 Secret Key"
+    Value: !GetAtt PublishCredentials.SecretAccessKey
   DistributionId:
     Description: "CloudFront Distribution ID"
     Value: !Ref CloudFrontDistribution
