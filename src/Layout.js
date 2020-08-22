@@ -10,22 +10,11 @@ import {
 import { useSpring } from "react-spring";
 import { easeQuadIn } from "d3";
 import { useDebug } from "./debug";
+import examples from "./clocks.example";
 
 const mapWithKey = _.map.convert({ cap: false });
 
 const radius = (node) => node.scale * 200;
-
-const initial = [
-  { text: "guards! guards!" },
-  { text: "A Poison seeping into the bones" },
-  { text: "old one awakes" },
-  { text: "old one awakes" },
-  { text: "old one awakes" },
-  { text: "old one awakes" },
-  { text: "old one awakes" },
-  {},
-  {},
-];
 
 const forceFocus = (focus) => {
   var nodes;
@@ -57,11 +46,10 @@ const forceFocus = (focus) => {
   return force;
 };
 
-const initializeNodes = (nodes) => {
-  return _.map((node) => ({ ...node, scale: 1 }), nodes);
-};
+const toNode = (node) =>
+  _.isString(node) ? toNode({ text: node }) : { ...node, scale: 1 };
 
-const useSimulation = () => {
+const useSimulation = (nodes) => {
   const simulation = useRef();
   const collide = useRef();
 
@@ -78,16 +66,17 @@ const useSimulation = () => {
   };
 
   useLayoutEffect(() => {
+    console.log("start simulation");
     collide.current = forceCollide().strength(0.1).radius(radius).iterations(1);
 
-    simulation.current = forceSimulation(initializeNodes(initial))
+    simulation.current = forceSimulation(_.map(toNode, nodes))
       .force("collide", collide.current)
       .force("body", forceManyBody().strength(50))
       .force("center", forceCenter())
       .on("tick", update);
 
     return () => simulation.current.stop();
-  }, []);
+  }, [nodes]);
 
   useLayoutEffect(() => {
     if (!simulation.current) {
@@ -134,7 +123,7 @@ const Circle = (props) => {
 };
 
 const Layout = (props) => {
-  const { state, focus, setFocus } = useSimulation();
+  const { state, focus, setFocus } = useSimulation(examples);
   const [p, set] = useSpring(() => ({ x: 0, y: 0 }));
 
   const focused = state.nodes[focus];
