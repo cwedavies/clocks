@@ -5,5 +5,5 @@ export default [
   "old one awakes",
   { text: "the Marquis onside", variant: "small" },
   "The Red Sashes Go to War",
-  { text: "Find the mark", variant: "small" },
+  { text: "Find the mark", variant: "cluster" },
 ];

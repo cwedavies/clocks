@@ -59,7 +59,7 @@ path {
 
 .debug .bounds {
   fill: #333333;
-  opacity: 0.1;
+  opacity: 0.3;
   stroke: #666666;
   stroke-width: 1px;
 }

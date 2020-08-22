@@ -3,26 +3,24 @@ import classnames from "classnames";
 import React, { useRef } from "react";
 import { useDebug } from "../../../hooks/debug";
 
-const SIZE = 120;
+const SIZE = 200;
 
-const Small = (props) => {
+const Cluster = (props) => {
   const { x, y, scale, onClick, text } = props;
   const { debug } = useDebug();
   const id = useRef(_.uniqueId());
   const className = classnames({ debug });
 
-  const arcp = SIZE * 0.75;
-
   return (
     <g className={className} transform={`translate(${x},${y}) scale(${scale})`}>
       <defs>
-        <path
-          id={id.current}
-          d={`M ${-arcp} 0 A ${arcp} ${arcp} 0 0 1 ${arcp} 0`}
-        />
+        <path id={id.current} d="M -40 -160  L 160 -80" />
       </defs>
       <circle onClick={onClick} className="bounds" r={SIZE} />
-      <circle r={SIZE * 0.7} />
+      <circle r="60" cx="80" cy="-32" />
+      <circle r="60" cx="-50" cy="-78" />
+      <circle r="60" cx="72" cy="100" />
+      <circle r="60" cx="-55" cy="58" />
       <text textAnchor="middle">
         <textPath href={`#${id.current}`} startOffset="50%">
           {text}
@@ -32,6 +30,6 @@ const Small = (props) => {
   );
 };
 
-Small.size = SIZE;
+Cluster.size = 200;
 
-export default Small;
+export default Cluster;
