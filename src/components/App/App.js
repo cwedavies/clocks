@@ -1,13 +1,11 @@
 import React from "react";
-import Layout from "./Layout";
-
-import "./App.css";
-import Version from "./Version";
+import PlayerClocks from "../PlayerClocks";
+import Version from "../Version";
 
 function App() {
   return (
     <>
-      <Layout />
+      <PlayerClocks />
       <Version />
     </>
   );

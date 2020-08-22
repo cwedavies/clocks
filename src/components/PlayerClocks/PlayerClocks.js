@@ -1,46 +1,45 @@
-import _ from "lodash/fp";
 import classnames from "classnames";
-import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
-import {
-  forceSimulation,
-  forceCenter,
-  forceManyBody,
-  forceCollide,
-} from "d3-force";
-import { useSpring } from "react-spring";
 import { easeQuadIn } from "d3";
-import { useDebug } from "./debug";
-import examples from "./clocks.example";
+import {
+  forceCenter,
+  forceCollide,
+  forceManyBody,
+  forceSimulation,
+} from "d3-force";
+import _ from "lodash/fp";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useSpring } from "react-spring";
+import examples from "../../clocks.example";
+import { useDebug } from "../../hooks/debug";
 
 const mapWithKey = _.map.convert({ cap: false });
 
 const radius = (node) => node.scale * 200;
 
 const forceFocus = (focus) => {
-  var nodes;
+  let nodes;
 
   const force = (alpha) => {
-    var i, node;
+    let i;
+    let node;
 
-    for (i = 0; i < nodes.length; ++i) {
+    for (i = 0; i < nodes.length; i += 1) {
       node = nodes[i];
 
       const isFocus = i === focus;
       const target = isFocus ? 1.2 : 1;
 
-      if (node.scale === target) {
-        continue;
+      if (node.scale !== target) {
+        const diff = target - node.prevScale;
+        const t = _.min([(1 - alpha) * 5, 1]);
+
+        node.scale = node.prevScale + diff * easeQuadIn(t);
       }
-
-      const diff = target - node.prevScale;
-      const t = _.min([(1 - alpha) * 5, 1]);
-
-      node.scale = node.prevScale + diff * easeQuadIn(t);
     }
   };
 
-  force.initialize = (_) => {
-    nodes = _;
+  force.initialize = (_nodes) => {
+    nodes = _nodes;
   };
 
   return force;
@@ -66,7 +65,6 @@ const useSimulation = (nodes) => {
   };
 
   useLayoutEffect(() => {
-    console.log("start simulation");
     collide.current = forceCollide().strength(0.1).radius(radius).iterations(1);
 
     simulation.current = forceSimulation(_.map(toNode, nodes))
@@ -83,12 +81,13 @@ const useSimulation = (nodes) => {
       return;
     }
 
-    simulation.current.nodes().forEach((node) => {
-      node.prevScale = node.scale;
-    });
+    const n = simulation.current.nodes();
+    for (let i = 0; i < n.length; i += 1) {
+      n[i].prevScale = n[i].scale;
+    }
 
     simulation.current.force("focus", forceFocus(focus)).alpha(1).restart();
-  }, [focus]);
+  }, [focus, nodes]);
 
   return { state, focus, setFocus };
 };
@@ -111,7 +110,7 @@ const Circle = (props) => {
           d={`M ${-arcp} 0 A ${arcp} ${arcp} 0 0 1 ${arcp} 0`}
         />
       </defs>
-      <circle onClick={onClick} className="bounds" r={200}></circle>
+      <circle onClick={onClick} className="bounds" r={200} />
       <circle r={200 * 0.7} />
       <text textAnchor="middle">
         <textPath href={`#${id.current}`} startOffset="50%">
@@ -122,7 +121,7 @@ const Circle = (props) => {
   );
 };
 
-const Layout = (props) => {
+const Layout = () => {
   const { state, focus, setFocus } = useSimulation(examples);
   const [p, set] = useSpring(() => ({ x: 0, y: 0 }));
 
@@ -143,7 +142,7 @@ const Layout = (props) => {
               scale={node.scale}
               x={node.x}
               y={node.y}
-              debug={true}
+              debug
             />
           ),
           state.nodes

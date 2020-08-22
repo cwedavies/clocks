@@ -15,8 +15,6 @@ export const Provider = (props) => {
   });
   const toggleDebug = () => setDebug((val) => !val);
 
-  console.log(debug);
-
   return (
     <Context.Provider
       {...props}
