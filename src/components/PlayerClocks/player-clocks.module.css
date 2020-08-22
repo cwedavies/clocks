@@ -5,3 +5,30 @@
   height: 2160px;
   width: 3840px;
 }
+
+.root * {
+  pointer-events: none;
+}
+
+.root :global(.bounds) {
+  fill: none;
+  stroke: none;
+  pointer-events: fill;
+}
+
+.root :global(.bounds) circle {
+  fill: none;
+  stroke: #e8ddcb;
+  stroke-width: 3px;
+}
+
+:global(.debug) :global(.bounds) {
+  fill: #333333;
+  opacity: 0.3;
+  stroke: #666666;
+  stroke-width: 1px;
+}
+
+:global(.debug) :global(.bounds):hover {
+  fill: #555533;
+}
