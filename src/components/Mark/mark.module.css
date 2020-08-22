@@ -1,0 +1,15 @@
+.root {
+  fill: #FE4365CC;
+  stroke: #FE4365CC;
+}
+
+.root circle {
+  fill: inherit;
+  stroke: inherit;
+  stroke-width: 0;
+}
+
+.root .line {
+  fill: none;
+  stroke-width: 3px;
+}

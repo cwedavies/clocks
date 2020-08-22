@@ -114,15 +114,7 @@ const Layout = () => {
           const Clock = getClockComponent(node.variant);
 
           return (
-            <Clock
-              onClick={() => setFocus(index)}
-              key={index}
-              text={node.text}
-              scale={node.scale}
-              x={node.x}
-              y={node.y}
-              debug
-            />
+            <Clock onClick={() => setFocus(index)} key={index} {...node} />
           );
         }, state.nodes)}
       </g>
