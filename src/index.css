@@ -23,14 +23,6 @@ body,
   justify-content: center;
 }
 
-svg {
-  font-family: "Timothy";
-  flex: 0 0 auto;
-  position: relative;
-  height: 2160px;
-  width: 3840px;
-}
-
 text {
   fill: #e8ddcb;
   stroke-width: 0;

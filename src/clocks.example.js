@@ -3,7 +3,7 @@ export default [
   "guards! guards!",
   "A Poison seeping into the bones",
   "old one awakes",
-  "the Marquis onside",
+  { text: "the Marquis onside", variant: "small" },
   "The Red Sashes Go to War",
-  "Find the mark",
+  { text: "Find the mark", variant: "small" },
 ];

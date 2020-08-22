@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { easeQuadIn } from "d3";
 import {
   forceCenter,
@@ -10,11 +9,13 @@ import _ from "lodash/fp";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSpring } from "react-spring";
 import examples from "../../clocks.example";
-import { useDebug } from "../../hooks/debug";
+import { getClockComponent } from "../clocks";
+
+import styles from "./player-clocks.module.css";
 
 const mapWithKey = _.map.convert({ cap: false });
 
-const radius = (node) => node.scale * 200;
+const radius = (node) => node.scale * getClockComponent(node.variant).size;
 
 const forceFocus = (focus) => {
   let nodes;
@@ -92,50 +93,28 @@ const useSimulation = (nodes) => {
   return { state, focus, setFocus };
 };
 
-const Circle = (props) => {
-  const { x, y, scale, onClick, text } = props;
-  const { debug } = useDebug();
-
-  const id = useRef(_.uniqueId());
-
-  const arcp = 200 * 0.75;
-
-  const className = classnames({ debug });
-
-  return (
-    <g className={className} transform={`translate(${x},${y}) scale(${scale})`}>
-      <defs>
-        <path
-          id={id.current}
-          d={`M ${-arcp} 0 A ${arcp} ${arcp} 0 0 1 ${arcp} 0`}
-        />
-      </defs>
-      <circle onClick={onClick} className="bounds" r={200} />
-      <circle r={200 * 0.7} />
-      <text textAnchor="middle">
-        <textPath href={`#${id.current}`} startOffset="50%">
-          {text}
-        </textPath>
-      </text>
-    </g>
-  );
-};
-
 const Layout = () => {
   const { state, focus, setFocus } = useSimulation(examples);
   const [p, set] = useSpring(() => ({ x: 0, y: 0 }));
 
   const focused = state.nodes[focus];
   useEffect(() => {
-    set(focused || { x: 0, y: 0 });
+    const { x = 0, y = 0 } = focused || {};
+    set({ x, y });
   }, [focus, focused, set]);
 
   return (
-    <svg viewBox="-1080 -1920 2160 3840" preserveAspectRatio="xMidYMid meet">
+    <svg
+      className={styles.root}
+      viewBox="-1080 -1920 2160 3840"
+      preserveAspectRatio="xMidYMid meet"
+    >
       <g transform={`translate(${-p.x.value}, ${-p.y.value})`}>
-        {mapWithKey(
-          (node, index) => (
-            <Circle
+        {mapWithKey((node, index) => {
+          const Clock = getClockComponent(node.variant);
+
+          return (
+            <Clock
               onClick={() => setFocus(index)}
               key={index}
               text={node.text}
@@ -144,9 +123,8 @@ const Layout = () => {
               y={node.y}
               debug
             />
-          ),
-          state.nodes
-        )}
+          );
+        }, state.nodes)}
       </g>
     </svg>
   );
