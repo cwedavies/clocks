@@ -16,7 +16,3 @@
 .root:hover {
   opacity: 1;
 }
-
-.root .rest {
-  opacity: 0.6;
-}
