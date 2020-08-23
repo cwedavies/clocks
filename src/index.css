@@ -40,10 +40,10 @@ circle {
 }
 
 path {
-  fill: none;
-  stroke: #e8ddcb;
-  stroke-width: 3px;
+  fill: #e8ddcb;
+  stroke: none;
 }
+
 
 body {
   margin: 0;

@@ -1,6 +1,12 @@
 .root {
-  fill: #FE4365CC;
-  stroke: #FE4365CC;
+  fill: #BAE4E5ee;
+  stroke: #BAE4E5ee;
+}
+
+.root path {
+  fill: inherit;
+  stroke: inherit;
+  stroke-width: 0;
 }
 
 .root circle {
