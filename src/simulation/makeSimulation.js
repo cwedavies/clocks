@@ -12,15 +12,13 @@ const forceManyBody = force.forceManyBody().strength(50);
 const forceCenter = force.forceCenter();
 
 const initializeNode = (node) =>
-  _.isString(node) ? initializeNode({ text: node }) : { ...node, scale: 1 };
+  _.isString(node) ? initializeNode({ text: node }) : { scale: 1, ...node };
 
 const initializeNodes = _.map(initializeNode);
 
-const setFocus = (i, coll) => _.set([i, "scale"], 1.2, coll);
-
-const makeSimulation = (nodes, focus) => {
+const makeSimulation = (nodes) => {
   return force
-    .forceSimulation(setFocus(focus, initializeNodes(nodes)))
+    .forceSimulation(initializeNodes(nodes))
     .stop()
     .force("collide", forceCollide)
     .force("body", forceManyBody)

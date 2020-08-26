@@ -1,7 +1,7 @@
 import makeSimulation from "./makeSimulation";
 
-const simulate = (nodes, focus) => {
-  return makeSimulation(nodes, focus).tick(300).nodes();
+const simulate = (nodes) => {
+  return makeSimulation(nodes).tick(300).nodes();
 };
 
 export default simulate;

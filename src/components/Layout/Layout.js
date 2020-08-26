@@ -6,6 +6,12 @@ import styles from "./layout.module.css";
 
 const mapWithKey = map.convert({ cap: false });
 
+const updateFocus = (focus, coll) =>
+  mapWithKey(
+    (node, key) => ({ ...node, scale: key === focus ? 1.2 : 1 }),
+    coll
+  );
+
 const Layout = (props) => {
   const { focus, nodes: nodesProp, getComponent = () => {} } = props;
   const [nodes, setNodes] = useState(
@@ -13,7 +19,7 @@ const Layout = (props) => {
   );
 
   useLayoutEffect(() => {
-    setNodes((n) => simulate(n, focus));
+    setNodes((n) => simulate(updateFocus(focus, n)));
   }, [focus]);
 
   return (
@@ -22,7 +28,6 @@ const Layout = (props) => {
       viewBox="-1080 -1920 2160 3840"
       preserveAspectRatio="xMidYMid meet"
     >
-      {}
       {mapWithKey((node, index) => {
         const Component = getComponent(node);
         return <Component key={index} {...node} />;
