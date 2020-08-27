@@ -2,8 +2,6 @@ import { map } from "lodash/fp";
 import React, { useState, useLayoutEffect } from "react";
 import { simulate } from "../../simulation";
 
-import styles from "./layout.module.css";
-
 const mapWithKey = map.convert({ cap: false });
 
 const updateFocus = (focus, coll) =>
@@ -23,16 +21,12 @@ const Layout = (props) => {
   }, [focus]);
 
   return (
-    <svg
-      className={styles.root}
-      viewBox="-1080 -1920 2160 3840"
-      preserveAspectRatio="xMidYMid meet"
-    >
+    <g>
       {mapWithKey((node, index) => {
         const Component = getComponent(node);
         return <Component key={index} {...node} />;
       }, nodes)}
-    </svg>
+    </g>
   );
 };
 

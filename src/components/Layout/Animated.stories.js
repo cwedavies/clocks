@@ -1,10 +1,10 @@
 import React from "react";
 import { useSpring, animated } from "react-spring";
 
-import Layout from "./Layout";
+import Layout from "./Animated";
 
 export default {
-  title: "Layout",
+  title: "Layouts/Animated",
   component: Layout,
   argTypes: {
     focus: {
@@ -27,7 +27,13 @@ const Template = (args) => (
       justifyContent: "center",
     }}
   >
-    <Layout {...args} nodes={[{}, {}, {}, {}, {}, {}]} />
+    <svg
+      style={{ width: 1080, minWidth: 1080 }}
+      viewBox="-1080 -1920 2160 3840"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <Layout {...args} nodes={[{}, {}, {}, {}, {}, {}]} />
+    </svg>
   </div>
 );
 

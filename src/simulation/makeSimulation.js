@@ -1,11 +1,6 @@
 import * as force from "d3-force";
 import _ from "lodash/fp";
-
-const forceCollide = force
-  .forceCollide()
-  .strength(0.1)
-  .radius((node) => node.scale * 200)
-  .iterations(1);
+import forceCollide from "./forceCollide";
 
 const forceManyBody = force.forceManyBody().strength(50);
 
@@ -16,11 +11,14 @@ const initializeNode = (node) =>
 
 const initializeNodes = _.map(initializeNode);
 
-const makeSimulation = (nodes) => {
+const makeSimulation = (
+  nodes,
+  { radius = (node) => node.scale * 200 } = {}
+) => {
   return force
     .forceSimulation(initializeNodes(nodes))
     .stop()
-    .force("collide", forceCollide)
+    .force("collide", forceCollide().strength(0.1).radius(radius).iterations(1))
     .force("body", forceManyBody)
     .force("center", forceCenter);
 };

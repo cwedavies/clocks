@@ -23,6 +23,10 @@ body,
   justify-content: center;
 }
 
+circle, text, path {
+  pointer-events: none;
+}
+
 text {
   fill: #e8ddcb;
   stroke-width: 0;
