@@ -1,6 +1,6 @@
 import { isObject } from "lodash";
 import { slice, uniqueId, map } from "lodash/fp";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import initial from "../clocks.example";
 
 const Context = React.createContext();
@@ -37,7 +37,6 @@ export const useClocks = () => useContext(Context);
 
 const Provider = (props) => {
   const value = useClockState();
-  useEffect(() => console.log(value), [value]);
   return <Context.Provider {...props} value={value} />;
 };
 

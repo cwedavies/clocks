@@ -41,10 +41,6 @@ const PlayerClocks = (props) => {
     set({ x: 0, y: 0, ...target });
   }, [focused, nodes, set]);
 
-  useEffect(() => {
-    console.log(focus, focused);
-  }, [focus, focused]);
-
   return (
     <g transform={`translate(${-p.x.value}, ${-p.y.value})`}>
       {mapWithKey((node) => {
