@@ -2,7 +2,7 @@ import * as force from "d3-force";
 import _ from "lodash/fp";
 import forceCollide from "./forceCollide";
 
-const forceManyBody = force.forceManyBody().strength(50);
+const forceManyBody = force.forceManyBody().strength(100);
 
 const forceCenter = force.forceCenter();
 

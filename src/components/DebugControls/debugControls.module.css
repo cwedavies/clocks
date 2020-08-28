@@ -1,0 +1,41 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  background: #00000099;
+  padding: 0.5rem;
+  width: 100%;
+
+  color: #fff;
+
+}
+
+.root button {
+  border: none;
+  outline: none;
+
+  min-width: 2rem;
+
+  background: #9cada499;
+
+  font-size: inherit;
+  color: inherit;
+  font-size: 1.4rem;
+  line-height: 1;
+
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+
+.root button:hover {
+  background: #9cada4;
+}
+
+.root button:active {
+  background: #767c77;
+}
+
+.root button+button {
+  margin-left: 0.5rem;
+}

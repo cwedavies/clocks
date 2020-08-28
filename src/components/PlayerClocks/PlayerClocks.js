@@ -1,7 +1,6 @@
 import _ from "lodash/fp";
 import React, { useEffect, useState } from "react";
 import { useSpring } from "react-spring";
-import examples from "../../clocks.example";
 import usePhysicsLayout from "../../hooks/usePhysicsLayout";
 import Clock, { getVariantSize } from "../Clock";
 
@@ -9,22 +8,49 @@ const mapWithKey = _.map.convert({ cap: false });
 
 const radius = (node) => node.scale * getVariantSize(node.variant);
 
-const PlayerClocks = () => {
+const center = (nodes) => {
+  if (!nodes.length) {
+    return { x: 0, y: 0 };
+  }
+
+  const { x, y } = _.reduce(
+    (acc, val) => ({ x: acc.x + val.x, y: acc.y + val.y }),
+    { x: 0, y: 0 },
+    nodes
+  );
+
+  return {
+    x: x / nodes.length,
+    y: y / nodes.length,
+  };
+};
+
+const PlayerClocks = (props) => {
+  const { clocks } = props;
+
   const [focus, setFocus] = useState(null);
-  const nodes = usePhysicsLayout(examples, focus, radius);
+  const focusedIndex = _.findIndex({ id: focus }, clocks);
+  const nodes = usePhysicsLayout(clocks, focusedIndex, radius);
 
   const [p, set] = useSpring(() => ({ x: 0, y: 0 }));
-  const focused = nodes[focus];
+  const focused = nodes[focusedIndex];
 
   useEffect(() => {
-    const { x = 0, y = 0 } = focused || {};
-    set({ x, y });
-  }, [focus, focused, set]);
+    const target = focused || center(nodes);
+
+    set({ x: 0, y: 0, ...target });
+  }, [focused, nodes, set]);
+
+  useEffect(() => {
+    console.log(focus, focused);
+  }, [focus, focused]);
 
   return (
     <g transform={`translate(${-p.x.value}, ${-p.y.value})`}>
-      {mapWithKey((node, key) => {
-        return <Clock key={key} {...node} onClick={() => setFocus(key)} />;
+      {mapWithKey((node) => {
+        return (
+          <Clock key={node.id} {...node} onClick={() => setFocus(node.id)} />
+        );
       }, nodes)}
     </g>
   );

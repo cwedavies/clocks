@@ -16,7 +16,7 @@ const forceFocus = (focus) => {
 
       if (node.scale !== target) {
         const diff = target - node.prevScale;
-        const t = min([(1 - alpha) * 5, 1]);
+        const t = min([(1 - alpha) * 2, 1]);
 
         node.scale = node.prevScale + diff * easeQuadIn(t);
       }
@@ -26,6 +26,7 @@ const forceFocus = (focus) => {
   force.initialize = (_nodes) => {
     nodes = _nodes;
     for (let i = 0; i < nodes.length; i += 1) {
+      nodes[i].scale = nodes[i].scale || 1;
       nodes[i].prevScale = nodes[i].scale;
     }
   };

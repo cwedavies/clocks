@@ -12,5 +12,6 @@
     "react/jsx-props-no-spreading": [0],
     "react/prop-types": [0],
     "import/order": ["error", { "alphabetize": { "order": "asc" }}],
+    "no-shadow": [0]
   }
 }

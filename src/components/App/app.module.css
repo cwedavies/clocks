@@ -6,3 +6,8 @@
   width: 3840px;
   min-width: 3840px;
 }
+
+.controls {
+  position: fixed;
+  top: 0;
+}
