@@ -36,12 +36,27 @@ const usePhysicsLayout = (initial, focus, radius = defaultRadius) => {
   const [nodes, setNodes] = useState([]);
 
   useLayoutEffect(() => {
+    if (!simulation.current) {
+      return () => {};
+    }
+    console.log("refocus");
+
+    simulation.current.force("focus", forceFocus(focus));
+    simulation.current.force("center").focus(focus);
+    simulation.current.alpha(1).restart();
+    return () => simulation.current.stop();
+  }, [focus]);
+
+  useLayoutEffect(() => {
     if (simulation.current) {
+      console.log("rejig");
       const nodes = merge(initial, simulation.current.nodes());
-      console.log(nodes);
-      simulation.current.nodes(mapWithKey(initNode, nodes)).alpha(1).restart();
+      simulation.current.nodes(mapWithKey(initNode, nodes));
+      simulation.current.force("focus", forceFocus(focus));
+      simulation.current.alpha(1).restart();
       return;
     }
+    console.log("start");
 
     const update = () => setNodes([...simulation.current.nodes()]);
 
@@ -50,14 +65,7 @@ const usePhysicsLayout = (initial, focus, radius = defaultRadius) => {
       .tick(300);
 
     update();
-  }, [initial, radius]);
-
-  useLayoutEffect(() => {
-    simulation.current.force("focus", forceFocus(focus));
-    simulation.current.force("center").focus(focus);
-    simulation.current.alpha(1).restart();
-    return () => simulation.current.stop();
-  }, [focus]);
+  }, [focus, initial, radius]);
 
   return nodes;
 };

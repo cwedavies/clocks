@@ -1,18 +1,15 @@
 import _ from "lodash/fp";
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 import styles from "./mark.module.css";
 
 const useRandom = (...bounds) => {
-  const ref = useRef(0);
-
-  useEffect(() => {
+  const [state] = useState(() => {
     const [start, end = 0] = bounds;
-    ref.current = _.random(start, end);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return _.random(start, end);
+  });
 
-  return ref.current;
+  return state;
 };
 
 const fromPolar = (angle, distance) => {

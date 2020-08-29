@@ -53,7 +53,6 @@ const forceCenter = () => {
 
   force.focus = (_) => {
     focus = _;
-    console.log("target", nodes[focus]);
   };
 
   return force;
