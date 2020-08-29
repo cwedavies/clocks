@@ -38,6 +38,7 @@ const usePhysicsLayout = (initial, focus, radius = defaultRadius) => {
   useLayoutEffect(() => {
     if (simulation.current) {
       const nodes = merge(initial, simulation.current.nodes());
+      console.log(nodes);
       simulation.current.nodes(mapWithKey(initNode, nodes)).alpha(1).restart();
       return;
     }
@@ -52,7 +53,9 @@ const usePhysicsLayout = (initial, focus, radius = defaultRadius) => {
   }, [initial, radius]);
 
   useLayoutEffect(() => {
-    simulation.current.force("focus", forceFocus(focus)).alpha(1).restart();
+    simulation.current.force("focus", forceFocus(focus));
+    simulation.current.force("center").focus(focus);
+    simulation.current.alpha(1).restart();
     return () => simulation.current.stop();
   }, [focus]);
 

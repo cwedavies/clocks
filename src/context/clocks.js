@@ -5,17 +5,20 @@ import initial from "../clocks.example";
 
 const Context = React.createContext();
 
-const initialize = (clock) => ({
-  id: uniqueId(),
-  ...clock,
-});
+const initialize = (clock) =>
+  isObject(clock)
+    ? {
+        id: uniqueId(),
+        ...clock,
+      }
+    : initialize({ text: clock });
 
 const useClockState = () => {
   const [clocks, setClocks] = useState(map(initialize, initial));
 
   const addClock = (text) => {
     setClocks((clocks) => {
-      const newClock = initialize(isObject(text) ? text : { text });
+      const newClock = initialize(text);
 
       return [...clocks, newClock];
     });
