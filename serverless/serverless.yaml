@@ -29,9 +29,19 @@ functions:
           route: $disconnect
       - websocket:
           route: $default
+  streamHandler:
+    handler: db-stream.handlerx
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt:
+              - ConnectionsTable
+              - Arn
 
 plugins:
   - serverless-dynamodb-local
+  - serverless-offline-dynamodb-streams
   - serverless-offline
 
 resources:
@@ -50,8 +60,12 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
 
 custom:
+  serverless-offline:
+    allowCache: true
   dynamodb:
     stages:
       - dev
@@ -59,3 +73,7 @@ custom:
       heapInitial: 200m
       heapMax: 1g
       migrate: true
+  serverless-offline-dynamodb-streams:
+    endpoint: http://localhost:8000
+    accessKeyId: DEFAULT_ACCESS_KEY
+    secretAccessKey: DEFAULT_SECRET
