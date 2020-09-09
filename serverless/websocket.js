@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 
+import makeWebsockets from "./src/websockets";
+
 const makeConnectionStore = require("./src/connectionStore");
 const db = require("./src/dynamodb");
-const makeWebsockets = require("./src/websockets");
 
 const connectionStore = makeConnectionStore(db);
 const websockets = makeWebsockets(connectionStore);
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   const { requestContext, body } = event;
   const { routeKey, connectionId } = requestContext;
 
@@ -23,3 +24,5 @@ exports.handler = async (event) => {
 
   return { statusCode: 200 };
 };
+
+export default handler;

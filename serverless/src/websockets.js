@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 const isOffline = process.env.IS_OFFLINE;
 
@@ -38,4 +38,4 @@ const makeWebsockets = (connectionStore) => {
   };
 };
 
-module.exports = makeWebsockets;
+export default makeWebsockets;

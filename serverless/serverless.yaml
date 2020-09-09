@@ -40,8 +40,9 @@ functions:
               - Arn
 
 plugins:
+  - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-offline-dynamodb-streams
+  - serverless-plugin-offline-dynamodb-stream
   - serverless-offline
 
 resources:
@@ -64,16 +65,27 @@ resources:
           StreamViewType: NEW_AND_OLD_IMAGES
 
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    packager: yarn
   serverless-offline:
     allowCache: true
+    host: 0.0.0.0
+    port: 4000
   dynamodb:
     stages:
       - dev
     start:
-      heapInitial: 200m
-      heapMax: 1g
+      host: dynamodb
+      port: 8000
       migrate: true
-  serverless-offline-dynamodb-streams:
-    endpoint: http://localhost:8000
-    accessKeyId: DEFAULT_ACCESS_KEY
-    secretAccessKey: DEFAULT_SECRET
+      noStart: true
+  dynamodbStream:
+    host: dynamodb
+    port: 8000
+    pollForever: true
+    streams:
+      - table: connections
+        functions:
+          - streamHandler

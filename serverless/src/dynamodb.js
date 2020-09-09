@@ -5,7 +5,7 @@ const isOffline = process.env.IS_OFFLINE;
 
 const offlineConfig = {
   region: "localhost",
-  endpoint: "http://localhost:8000",
+  endpoint: "http://dynamodb:8000",
 };
 
 module.exports = new AWS.DynamoDB.DocumentClient({

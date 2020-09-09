@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
+import makeWebsockets from "./src/websockets";
+
 const AWS = require("aws-sdk");
 
 const makeConnectionStore = require("./src/connectionStore");
 const db = require("./src/dynamodb");
-const makeWebsockets = require("./src/websockets");
 
 const connectionStore = makeConnectionStore(db);
 const websockets = makeWebsockets(connectionStore);
@@ -14,7 +15,7 @@ const unmarshall = (records) => {
   });
 };
 
-exports.handlerx = async (event) => {
+export const handlerx = async (event) => {
   console.log(event);
 
   const newConnections = unmarshall(event.Records);
@@ -22,3 +23,5 @@ exports.handlerx = async (event) => {
 
   return { statusCode: 200 };
 };
+
+export default handlerx;
