@@ -7,9 +7,20 @@
     "dev": "serverless offline start"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@jest/globals": "^26.4.2",
     "@types/jest": "^26.0.13",
+    "babel-jest": "^26.3.0",
     "babel-loader": "^8.1.0",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "faker": "^5.1.0",
     "jest": "^26.4.2",
+    "jest-json-schema": "^2.1.0",
+    "prettier": "^2.1.1",
+    "rxjs": "^6.6.3",
     "serverless": "^1.80.0",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^6.7.0",
@@ -17,6 +28,16 @@
     "serverless-plugin-offline-dynamodb-stream": "^1.0.19",
     "serverless-webpack": "^5.3.4",
     "webpack": "^4.44.1",
-    "webpack-node-externals": "^2.5.2"
-  }
+    "webpack-node-externals": "^2.5.2",
+    "ws": "^7.3.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  },
+  "dependencies": {}
 }

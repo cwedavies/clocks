@@ -1,0 +1,11 @@
+{
+  "$id": "clock",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Clock",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "label": { "type": "string" }
+  },
+  "required": ["id", "label"]
+}

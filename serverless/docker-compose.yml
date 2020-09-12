@@ -2,9 +2,10 @@ version: '2.4'
 
 services:
   dynamodb:
-     image: cnadiminti/dynamodb-local:latest
-     ports:
-       - 8000:8000
+    image: cnadiminti/dynamodb-local:latest
+    command: --sharedDb --inMemory
+    ports:
+      - 8000:8000
   admin:
       image: boogak/dynamodb-admin
       ports:

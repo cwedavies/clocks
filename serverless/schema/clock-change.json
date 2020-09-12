@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Clock Change",
+  "type": "object",
+  "properties": {
+    "action": {"const": "clock/change" },
+    "payload": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/change" }
+    }
+  },
+  "$defs": {
+    "change": {
+      "type": "object",
+      "required": ["oldValue", "newValue"],
+      "oneOf": [
+        { "$ref": "#/$defs/addition" },
+        { "$ref": "#/$defs/removal" },
+        { "$ref": "#/$defs/modification" }
+      ]
+    },
+    "addition": {
+      "properties": {
+        "oldValue": { "type": "null" },
+        "newValue": { "$ref": "clock#" }
+      }
+    },
+    "removal": {
+      "properties": {
+        "oldValue": { "$ref": "clock#" },
+        "newValue": { "type": "null" }
+      }
+    },
+    "modification": {
+      "properties": {
+        "oldValue": { "$ref": "clock#" },
+        "newValue": { "$ref": "clock#" }
+      }
+    }
+  }
+}

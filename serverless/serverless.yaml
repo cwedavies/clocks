@@ -21,7 +21,7 @@ provider:
 
 functions:
   websocketHandler:
-    handler: websocket.handler
+    handler: src/websocket.handler
     events:
       - websocket:
           route: $connect
@@ -29,14 +29,16 @@ functions:
           route: $disconnect
       - websocket:
           route: $default
-  streamHandler:
-    handler: db-stream.handlerx
+      - websocket:
+          route: clock/change/request
+  clockStream:
+    handler: src/streamClocks.handler
     events:
       - stream:
           type: dynamodb
           arn:
             Fn::GetAtt:
-              - ConnectionsTable
+              - ClocksTable
               - Arn
 
 plugins:
@@ -51,6 +53,22 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: connections
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+    ClocksTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: clocks
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -86,6 +104,6 @@ custom:
     port: 8000
     pollForever: true
     streams:
-      - table: connections
+      - table: clocks
         functions:
-          - streamHandler
+          - clockStream
