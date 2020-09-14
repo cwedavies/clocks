@@ -34,7 +34,7 @@ const requestChange = (clock) => ({
 const connect = (options = {}) =>
   webSocket({
     ...options,
-    url: "ws://localhost:3001",
+    url: "wss://r6m649gqqj.execute-api.us-east-1.amazonaws.com/dev",
   });
 
 const connectAndSubscribe = () =>

@@ -1,8 +1,6 @@
-import { send as gatewaySend } from "./aws/gateway";
-
-const makeSubscriptions = (subscriberStore, clockStore) => {
+const makeSubscriptions = (gateway, subscriberStore, clockStore) => {
   const send = (connection, changes) =>
-    gatewaySend(connection, {
+    gateway.send(connection, {
       type: "clock/changes",
       payload: changes,
     });

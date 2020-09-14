@@ -1,22 +1,22 @@
 import dynamodb from "./aws/dynamodb";
+import gateway from "./aws/gateway";
 import makeSubscriptions from "./makeSubscriptions";
 import { makeSubscriptionStore, makeClockStore } from "./store";
 
 const subscriptionStore = makeSubscriptionStore(dynamodb);
 const clockStore = makeClockStore(dynamodb);
-
-const subscriptions = makeSubscriptions(subscriptionStore, clockStore);
+const subscriptions = makeSubscriptions(gateway, subscriptionStore, clockStore);
 
 const handleSubscriptionRequest = async (event) => {
   const { requestContext } = event;
   const { connectionId } = requestContext;
 
-  subscriptions.subscribe(connectionId);
+  await subscriptions.subscribe(connectionId);
 };
 
 const handleChangeRequest = async (event) => {
   const { body } = event;
-  clockStore.put(JSON.parse(body).payload);
+  await clockStore.put(JSON.parse(body).payload);
 };
 
 export const handler = async (event) => {

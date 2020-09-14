@@ -5,6 +5,15 @@ provider:
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   region: us-east-1
+  environment:
+    GATEWAY_ENDPOINT:
+      Fn::Join:
+        - ''
+        - - Ref: WebsocketsApi
+          - .execute-api.
+          - Ref: AWS::Region
+          - .amazonaws.com/
+          - ${self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -30,6 +39,8 @@ functions:
       - websocket:
           route: $default
       - websocket:
+          route: clock/subscription/request
+      - websocket:
           route: clock/change/request
   clockStream:
     handler: src/streamClocks.handler
@@ -39,7 +50,7 @@ functions:
           arn:
             Fn::GetAtt:
               - ClocksTable
-              - Arn
+              - StreamArn
 
 plugins:
   - serverless-webpack
@@ -60,9 +71,6 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
     ClocksTable:
@@ -76,16 +84,15 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_AND_OLD_IMAGES
 
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
-    includeModules: true
+    includeModules:
+      forceExclude:
+        - aws-sdk
     packager: yarn
   serverless-offline:
     allowCache: true
