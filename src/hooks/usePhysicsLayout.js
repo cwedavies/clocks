@@ -5,7 +5,7 @@ import { forceFocus, makeSimulation } from "../simulation";
 const mapWithKey = map.convert({ cap: false });
 
 const merge = (clocks, nodes) =>
-  map((clock) => ({ ...clock, ...find({ id: clock.id }, nodes) }), clocks);
+  map((clock) => ({ ...find({ id: clock.id }, nodes), ...clock }), clocks);
 
 const defaultRadius = (node) => node.scale * 200;
 

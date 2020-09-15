@@ -1,23 +1,25 @@
 const makeSubscriptions = (gateway, subscriberStore, clockStore) => {
   const send = (connection, changes) =>
     gateway.send(connection, {
-      type: "clock/changes",
+      action: "clock/changes",
       payload: changes,
     });
 
   const broadcast = async (changes) => {
     const subscribers = await subscriberStore.list();
-    return Promise.all(subscribers.map(async ({ id }) => {
-      try {
-        return await send(id, changes)
-      } catch (err) {
-        if (err.statusCode !== 410) {
-          console.error(err)
-          return null;
+    return Promise.all(
+      subscribers.map(async ({ id }) => {
+        try {
+          return await send(id, changes);
+        } catch (err) {
+          if (err.statusCode !== 410) {
+            console.error(err);
+            return null;
+          }
+          return subscriberStore.remove(id);
         }
-        return subscriberStore.remove(id);
-      }
-    }));
+      })
+    );
   };
 
   const subscribe = async (connection) => {

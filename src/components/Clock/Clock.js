@@ -13,14 +13,14 @@ const Clock = (props) => {
     FaceComponent = null,
     size,
     onClick,
-    text,
+    label,
     marks,
   } = props;
 
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`}>
       <Bounds size={size} onClick={onClick} />
-      {FaceComponent && <FaceComponent text={text} />}
+      {FaceComponent && <FaceComponent label={label} />}
       {mapWithKey(
         (mark, key) => (
           <Mark key={key} {...mark} />

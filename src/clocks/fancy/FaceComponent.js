@@ -2,14 +2,14 @@ import React from "react";
 import { TextPath } from "../../components/SVG";
 
 const Face = (props) => {
-  const { text } = props;
+  const { label } = props;
 
   const arc = 200 * 0.75;
 
   return (
     <g>
       <TextPath d={`M ${-arc} 20 A ${arc} ${arc * 1.2} 0 0 1 ${arc} 20`}>
-        {text}
+        {label}
       </TextPath>
       <g transform="scale(2) translate(-100, -100)">
         <path
