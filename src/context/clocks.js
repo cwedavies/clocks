@@ -1,13 +1,7 @@
-import { values } from "lodash/fp";
-import {
-  useObservableState,
-  useObservable,
-  useSubscription,
-} from "observable-hooks";
 import React, { useContext } from "react";
 import { Subject } from "rxjs";
 import { webSocket } from "rxjs/webSocket";
-import clocksFromActions from "../stream/clocks";
+import useClockSubscription from "../hooks/useClockSubscription";
 
 const Context = React.createContext();
 
@@ -24,12 +18,7 @@ const websocket$ = webSocket({
 });
 
 const Provider = (props) => {
-  const clocks$ = useObservable(() => websocket$.pipe(clocksFromActions));
-  const clocks = values(useObservableState(clocks$, {}));
-
-  useSubscription(open$, () =>
-    websocket$.next({ action: "clock/subscription/request" })
-  );
+  const clocks = useClockSubscription(websocket$);
 
   return <Context.Provider {...props} value={{ clocks }} />;
 };
