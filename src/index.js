@@ -1,17 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./components/App";
-import ClockProvider from "./context/clocks";
+import App from "./App";
 import DebugProvider from "./hooks/debug";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
     <DebugProvider>
-      <ClockProvider>
-        <App />
-      </ClockProvider>
+      <App />
     </DebugProvider>
   </React.StrictMode>,
   document.getElementById("root")
