@@ -1,4 +1,17 @@
 .root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.root > svg {
   font-family: "Timothy";
   flex: 0 0 auto;
   position: relative;

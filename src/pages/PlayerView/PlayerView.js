@@ -16,18 +16,20 @@ const PlayerView = () => {
   const setFocus = (id) => setFocusIndex(findIndex({ id }, nodes));
 
   return (
-    <svg
-      className={styles.root}
-      viewBox="-1080 -1920 2160 3840"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      {map(
-        (node) => (
-          <Clock key={node.id} {...node} onClick={() => setFocus(node.id)} />
-        ),
-        nodes
-      )}
-    </svg>
+    <div className={styles.root}>
+      <svg
+        className={styles.root}
+        viewBox="-1080 -1920 2160 3840"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {map(
+          (node) => (
+            <Clock key={node.id} {...node} onClick={() => setFocus(node.id)} />
+          ),
+          nodes
+        )}
+      </svg>
+    </div>
   );
 };
 
